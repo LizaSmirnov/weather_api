@@ -1,48 +1,72 @@
-// function getWeather(){
-//     const cityName = document.getElementById('city_name')
+var icon= $('#icon');
+var temperature= $('#temperature');
+var humidity = $('humidity');
+var windSpeed = $('#windSpeed');
+    
+var cityName =$('#cityName').value;
+var newCity = $('#cityInput').value;
+cityName='--'+newCity+'--';
+var key = 'dffa84ce1822c1184cd63ec1b24553c1';
+var url = 'https://api.openweathermap.org/data/2.5/forecast?q='+ newCity +'&appid='+ key
 
-//     if (!cityName){
-//         return;
-//     }
-// }
-function fetchWeather(){
-    const cityName =$('#cityName');
-    const newCity = $('#cityInput');
-    cityName.innerHTML='--'+newCity.value+'--'
-    var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=&appid=dffa84ce1822c1184cd63ec1b24553c1'
 
-    fetch(requestUrl)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data)
-      //Loop over the data to generate a table, each table row will have a link to the repo url
-     
-    });
-}
-
+// Event listener for City Search
 let searchBtn = $('#btnGet');
 searchBtn.on('click',function(event){
   event.preventDefault();
   fetchWeather();
- 
-  //save content written to local storage
- 
-  //read time show text
+  ajaxRequest();
 });
 
-//render date for all
-//render time for all 
+// Event listener for clear city history
+// let clearSearch = $('#clear-history')
+// clearSearch.addEventListener('click', function(){
+//   window.localStorage.clear('');
+// });
 
+// Fetches api data
+function fetchWeather() {
+  fetch(url)
+  .then(function (response) {
+    return response.json()
+  })
+  .then(function (data) {
+  console.log(data)
+  .catch(err => alert('Not valid entry'))
+})};
+
+// AJAX request used to store information of city search
+//to the local storage
+function ajaxRequest(){
+$.ajax({
+  url: url,
+  method: 'GET',
+}).then(function (response) {
+  console.log(response);
+  lat = response.coord.lat;
+  lon = response.coord.lon;
+
+  // push city input to cities array
+  cities.push(cityInput);
+  //store cities in localStorage
+  localStorage.setItem('cities', JSON.stringify(cities));
+
+});
+};
+
+//render date for all
 $(function(){
   const day= dayjs().format('MM/DD/YY');
   const currentDate=$('#date');
   currentDate.text('Date: ' + day)
   //all day1-5 is currentdate +1
-  let now =dayjs()
+  // let now =parseInt(dayjs().format('MDYY'));
+  let now= dayjs();
+  console.log(now);
   let newDate = now.add('1','day');
-  console.log(newDate.$d);
+  // let string = JSON.stringify(newDate.$d);
+  // console.log(string);
+  // console.log(typeof(string));
 
   const day1=$('#date1');
   day1.text('Date: ' + (newDate.$d));
@@ -58,4 +82,16 @@ $(function(){
   const day5=$('#date5');
   const newDate5 = now.add('5','day');
   day5.text('Date: ' + (newDate5.$d));
-})
+});
+
+
+// function localWeather(){
+//   $.ajax({
+//       url: requestUrl,
+//       method: 'GET'
+//     }).then(function(localResponse) {
+//       console.log(localResponse);
+//     var city = localResponse.city;
+//     console.log(city);
+//   })};
+
