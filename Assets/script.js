@@ -1,15 +1,26 @@
-fetch ('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}')
-.then(res =>res.json())
-.then(function (data) {
-    //   this data will have the latitude and longitude
-    fetch(`/getStuffApi?lat=${data.lat}&long=${data.long}`)
-      .then(res => res.json())
-      .then(function (data) {
-        //   the data here would have our map data from a specific location
-      })
-  })
+// function getWeather(){
+//     const cityName = document.getElementById('city_name')
 
-  fetch(requestUrl)
-  .then(function (response) {
-    return response.json();
-  })
+//     if (!cityName){
+//         return;
+//     }
+// }
+function fetchWeather(){
+    const cityName =document.getElementById('cityName');
+    const newCity = document.getElementById('cityInput');
+    cityName.innerHTML='--'+newCity.value+'--'
+    var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=&appid=dffa84ce1822c1184cd63ec1b24553c1'
+
+    fetch(requestUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data)
+      //Loop over the data to generate a table, each table row will have a link to the repo url
+     
+    });
+}
+
+let searchBtn = document.getElementById('btnGet');
+searchBtn.addEventListener('click',fetchWeather )
