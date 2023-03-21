@@ -1,88 +1,121 @@
-var icon= $('#icon');
-var temperature= $('#temperature');
+var icon = $('#icon');
+var temperature = $('#temperature');
 var humidity = $('humidity');
 var windSpeed = $('#windSpeed');
-    
-var cityName =$('#cityName').value;
-var newCity = $('#cityInput').value;
-cityName='--'+newCity+'--';
+var url;
 var key = 'dffa84ce1822c1184cd63ec1b24553c1';
-var url = 'https://api.openweathermap.org/data/2.5/forecast?q='+ newCity +'&appid='+ key
 
 
 // Event listener for City Search
 let searchBtn = $('#btnGet');
-searchBtn.on('click',function(event){
+searchBtn.on('click', function (event) {
   event.preventDefault();
-  fetchWeather();
-  ajaxRequest();
+  // get city name
+  var cityName = $('#cityName').val();
+  var newCity = $('#cityInput').val();
+  console.log(newCity); // sanity check
+  var lat = $('#latitude').val();
+  var lon =$('longitude').val();
+  // build url (this url is for the 5 day forecast not current date)
+  urlForecast = 'https://api.openweathermap.org/data/2.5/forecast?q=' + newCity + '&appid=' + key + '&units=imperial'
+  // fetch weather
+  urlCurrent = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat + lon +'={lon}&appid='+ key
+  fetchFutureWeather();
+  fetchCurrentWeather();
+
 });
 
-// Event listener for clear city history
+// // Event listener for clear city history
 // let clearSearch = $('#clear-history')
 // clearSearch.addEventListener('click', function(){
 //   window.localStorage.clear('');
 // });
 
+
+
+
+
 // Fetches api data
-function fetchWeather() {
-  fetch(url)
-  .then(function (response) {
-    return response.json()
-  })
-  .then(function (data) {
-  console.log(data)
-  .catch(err => alert('Not valid entry'))
-})};
+function fetchFutureWeather() {
+  fetch(urlForecast)
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function(data) {
 
-// AJAX request used to store information of city search
-//to the local storage
-function ajaxRequest(){
-$.ajax({
-  url: url,
-  method: 'GET',
-}).then(function (response) {
-  console.log(response);
-  lat = response.coord.lat;
-  lon = response.coord.lon;
+      temperature = data.weather
+      // extract the weather icon for that day
 
-  // push city input to cities array
-  cities.push(cityInput);
-  //store cities in localStorage
-  localStorage.setItem('cities', JSON.stringify(cities));
+      // put that weather icon(string) into the weather icon url
+      // https://openweathermap.org/img/wn/" + icon + "@2x.png
 
-});
+      // insert the new icon source into the coresponding img el
+
+    })
 };
 
-//render date for all
-$(function(){
-  const day= dayjs().format('MM/DD/YY');
-  const currentDate=$('#date');
-  currentDate.text('Date: ' + day)
-  //all day1-5 is currentdate +1
-  // let now =parseInt(dayjs().format('MDYY'));
-  let now= dayjs();
-  console.log(now);
-  let newDate = now.add('1','day');
-  // let string = JSON.stringify(newDate.$d);
-  // console.log(string);
-  // console.log(typeof(string));
+function fetchCurrentWeather() {
+  fetch(urlCurrent)
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function(data) {
 
-  const day1=$('#date1');
+      lat = data.city.cord.lat;
+      lon = data.city.cord.lon;
+      city = data;
+    })
+  };
+  
+
+
+//     // push city input to cities array
+//     cities.push(cityInput);
+//     //store cities in localStorage
+//     localStorage.setItem('cities', JSON.stringify(cities));
+
+//   });
+// };
+
+//list.main.temp
+//list.main.humidity 
+// list.weather.icon
+//list.wind.speed
+//list.sys.pod says the part of the day 
+//city.cord.lat
+//city.cord.lon
+//city.country
+//city.name
+
+
+
+//render date for all
+$(function () {
+  const day = dayjs().format('MM/DD/YY');
+  const currentDate = $('#date');
+  currentDate.text('Date: ' + day)
+  // console.log(day);
+  // let now =parseInt(dayjs().format('MDYY'));
+  let now = dayjs();
+  // console.log(now);
+  let newDate = now.add('1', 'day');
+  const day1 = $('#date1');
+
   day1.text('Date: ' + (newDate.$d));
-  const newDate2 = now.add('2','day');
-  const day2=$('#date2');
+  const newDate2 = now.add('2', 'day');
+  const day2 = $('#date2');
   day2.text('Date: ' + (newDate2.$d));
-  const newDate3 = now.add('3','day');
-  const day3=$('#date3');
+  const newDate3 = now.add('3', 'day');
+  const day3 = $('#date3');
   day3.text('Date: ' + (newDate3.$d));
-  const day4=$('#date4');
-  const newDate4 = now.add('4','day');
+  const day4 = $('#date4');
+  const newDate4 = now.add('4', 'day');
   day4.text('Date: ' + (newDate4.$d));
-  const day5=$('#date5');
-  const newDate5 = now.add('5','day');
+  const day5 = $('#date5');
+  const newDate5 = now.add('5', 'day');
   day5.text('Date: ' + (newDate5.$d));
 });
+
 
 
 // function localWeather(){
