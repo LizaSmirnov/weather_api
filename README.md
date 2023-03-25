@@ -13,12 +13,12 @@
 
 ## Technologies
 
-HTML
-CSS
-JavaScript
-jQuery
-Day.js
-OpenWeather API - View Docs
+- HTML
+- CSS
+- JavaScript
+- jQuery
+- Day.js
+- OpenWeather API - View Docs
 
 
 ## Credits
