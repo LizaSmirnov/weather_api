@@ -11,6 +11,15 @@
 
 ## Installation/Description
 
+##Technologies
+
+HTML
+CSS
+JavaScript
+jQuery
+Day.js
+OpenWeather API - View Docs
+
 
 ## Credits
 
