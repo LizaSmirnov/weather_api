@@ -26,8 +26,9 @@
 - w3school.com 
 - modules from classwork
 - StackOverFlow.com
--https://jquery.com
--my tutors
+- https://jquery.com
+- my tutors
+- This youtube https://www.youtube.com/watch?v=2hJ1rTANVnk
 
 ## Deployement
 https://lizasmirnov.github.io/weather_api/
