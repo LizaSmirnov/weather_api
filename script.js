@@ -1,26 +1,29 @@
 var key = 'dffa84ce1822c1184cd63ec1b24553c1';
 
-
 // Event listener for City Search
 let searchBtn = $('#btnGet');
 searchBtn.on('click', function (event) {
   event.preventDefault();
   $('.col-lg-8').show();
-
+  
+  searchHis = $('#search-history')
   inputCity = $('#cityInput').val();
-  console.log(inputCity); // sanity check
+
+  // console.log(inputCity); // sanity check
 
   urlForecast = 'https://api.openweathermap.org/data/2.5/forecast?q=' + inputCity + '&appid=' + key + '&units=imperial';
  
   urlCurrent = 'https://api.openweathermap.org/data/2.5/weather?q='+ inputCity +'&appid='+ key + '&units=imperial';
   fetchFutureWeather();//bottom 5 day forcast weather
   fetchCurrentWeather();//current weather
-  // storeLocalStorage();
+  storeToLocalStorage();
+  generateButton()
 });
 
 // Event listener for clear city history
 $("#clear-history").on("click", function (event) {
-  $("#historyList").empty();
+  localStorage.clear();
+  window.location.reload();
 });
 
 //call to fetch current data for that city
@@ -30,7 +33,7 @@ fetch(urlCurrent)
     return response.json()
   })
   .then(function(response) {
-console.log(response);
+// console.log(response);
     cityName = $('#cityInput').val();
     let nameChange=$('#cityName')
     nameChange.text(cityName.toUpperCase())
@@ -38,7 +41,7 @@ console.log(response);
     let iconImg = $('#local-icon')
     cityIcon = response.weather[0].icon
     iconImg.attr('src', 'https://openweathermap.org/img/wn/'+cityIcon+'.png')
-    console.log(iconImg);
+    // console.log(iconImg);
    
     
     let temp = $('#temperature')
@@ -63,14 +66,14 @@ function fetchFutureWeather() {
       return response.json()
     })
     .then(function(data) {
-    console.log(data);
+    // console.log(data);
 
 //Forecast day 1 
     let icon1Img = $('.card-img-top1')
     icon1 = data.list[0].weather[0].icon
-    console.log(icon1);
+    // console.log(icon1);
     icon1Img.attr('src', 'https://openweathermap.org/img/wn/'+icon1+'.png')
-    console.log(icon1Img);
+    // console.log(icon1Img);
    
     let temp1 = $('#temp1')
     tempData1 = data.list[0].main.temp
@@ -87,9 +90,9 @@ function fetchFutureWeather() {
 //Forecast day 2
     let icon2Img = $('.card-img-top2')
     icon2 = data.list[8].weather[0].icon
-    console.log(icon2);
+    // console.log(icon2);
     icon2Img.attr('src', 'https://openweathermap.org/img/wn/'+icon2+'.png')
-    console.log(icon1Img);
+    // console.log(icon1Img);
    
     let temp2 = $('#temp2')
     tempData2 = data.list[8].main.temp
@@ -106,9 +109,9 @@ function fetchFutureWeather() {
 //Forecast day 3
     let icon3Img = $('.card-img-top3')
     icon3 = data.list[16].weather[0].icon
-    console.log(icon3);
+    // console.log(icon3);
     icon3Img.attr('src', 'https://openweathermap.org/img/wn/'+icon3+'.png')
-    console.log(icon3Img);
+    // console.log(icon3Img);
    
     let temp3 = $('#temp3')
     tempData3 = data.list[16].main.temp
@@ -125,9 +128,9 @@ function fetchFutureWeather() {
     //Forecast day 4
     let icon4Img = $('.card-img-top4')
     icon4 = data.list[24].weather[0].icon
-    console.log(icon4);
+    // console.log(icon4);
     icon4Img.attr('src', 'https://openweathermap.org/img/wn/'+icon4+'.png')
-    console.log(icon4Img);
+    // console.log(icon4Img);
    
     let temp4 = $('#temp4')
     tempData4 = data.list[24].main.temp
@@ -144,9 +147,9 @@ function fetchFutureWeather() {
     //Forecast day 5
     let icon5Img = $('.card-img-top5')
     icon5 = data.list[32].weather[0].icon
-    console.log(icon5);
+    // console.log(icon5);
     icon5Img.attr('src', 'https://openweathermap.org/img/wn/'+icon5+'.png')
-    console.log(icon5Img);
+    // console.log(icon5Img);
    
     let temp5 = $('#temp5')
     tempData5 = data.list[32].main.temp
@@ -188,25 +191,75 @@ $(function () {
   day5.text('Date: ' + (newDate5.$d));
 });
 
-// function storeLocalStorage(){  
-// citiesSearched = $('.list-group');
-// citiesStored =  $(JSON.parse(localStorage.getItem('saved'))); 
+function storeToLocalStorage() {
 
-// for (var i =0 ; i < citiesSearched.length; i++){
-//   ul = document.createElement('ul');
-//   ul.textContent = citiesSearched[i];
-//   ul.setAttribute('ul', 'city-names')
-// }
+new_data = $('#cityInput').val();
 
-// citiesSearched.push($("#cityInput").value);
-// localStorage.setItem('gloves', JSON.stringify(citiesStored));
-// storeLocalStorage(); 
+if(localStorage.getItem('data') == null){
+  localStorage.setItem('data','[]');
+}
 
-// }
-// //added clear histor fuction to clear searched city list
-// $("#clear-history").on("click", function (event) {
-//     $("#ul").empty();
+old_data = JSON.parse(localStorage.getItem('data'))
+old_data.push(new_data);
+
+localStorage.setItem('data',JSON.stringify(old_data));
+
+generateButton ();
+}
+
+function generateButton (){
+  recentSearch = JSON.parse(localStorage.getItem("data")) || [];
+  
+  var searchHistoryNoDuplicates = [];
+  cities = ($('#cityInput').val())
+  recentSearch.forEach(function () {
+    if (!recentSearch.includes(cities)) {
+      searchHistoryNoDuplicates.push(cities);
+    }
+     console.log(searchHistoryNoDuplicates)
+  });
+
+  buttonSecond = $('btn-secondary')
+  if(recentSearch !== null )  {
+  for (var i = 0; i < recentSearch.length; i++)  { 
+	    var buttonEl = $('<button>', {"class": "btn btn-secondary" });
+	    buttonEl.text(`${recentSearch[i]}`);
+	    searchHis.prepend(buttonEl);
+      console.log(recentSearch[0])
+  }
+    buttonSecond = $('.btn-secondary').text
+    console.log(recentSearch[0])
+
+    searchHis.on('click', ".btn-secondary",function(event) {
+    event.preventDefault();
+
+    fetchCurrentWeather(buttonSecond);
+    console.log($('.btn-secondary').text)
+    fetchFutureWeather('.btn-secondary'.text);
+  });
+ 
+//   button = JSON.parse(localStorage.getItem('data', 'value'));
+//   button1 = button[0];
+//   console.log(button1)
+//   button2 = button[1];
+//   console.log(button2)
+//   button3 = button[3];
+//   button4 = button[4];
+//   button5 = button[5];
+//   button6 = button[6];
+
+//   listOfCities = $('#search-history')
+  
+//   let i = 0
+//   button.forEach((button) => {
+//     listOfCities.text('History: '  + button[i]);
 // });
+//   listOfCities.text('History: '  + button);
+
+
+    }}
+
+
 
 
 
