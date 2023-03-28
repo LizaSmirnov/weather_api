@@ -50,7 +50,7 @@ iconImg.attr('src', 'https://openweathermap.org/img/wn/'+cityIcon+'.png')
 
 let temp = $('#temperature')
 cityTemp = response.main.temp
-temp.text('Temperature: ' + cityTemp + 'F')
+temp.text('Temp: ' + cityTemp + 'F')
 
 let humidity=$('#humidity')
 hum = response.main.humidity
@@ -82,7 +82,7 @@ icon1Img.attr('src', 'https://openweathermap.org/img/wn/'+icon1+'.png')
 
 let temp1 = $('#temp1')
 tempData1 = data.list[0].main.temp
-temp1.text('Temperature: ' + tempData1 + 'F')
+temp1.text('Temp: ' + tempData1 + 'F')
 
 let wind1 = $('#wind1')
 windData1 = data.list[0].wind.speed
@@ -100,7 +100,7 @@ icon2Img.attr('src', 'https://openweathermap.org/img/wn/'+icon2+'.png')
 
 let temp2 = $('#temp2')
 tempData2 = data.list[8].main.temp
-temp2.text('Temperature: ' + tempData2 + 'F')
+temp2.text('Temp: ' + tempData2 + 'F')
 
 let wind2 = $('#wind2')
 windData2 = data.list[8].wind.speed
@@ -117,7 +117,7 @@ icon3Img.attr('src', 'https://openweathermap.org/img/wn/'+icon3+'.png')
 
 let temp3 = $('#temp3')
 tempData3 = data.list[16].main.temp
-temp3.text('Temperature: ' + tempData3 + 'F')
+temp3.text('Temp: ' + tempData3 + 'F')
 
 let wind3 = $('#wind3')
 windData3 = data.list[16].wind.speed
@@ -134,7 +134,7 @@ icon4Img.attr('src', 'https://openweathermap.org/img/wn/'+icon4+'.png')
 
 let temp4 = $('#temp4')
 tempData4 = data.list[24].main.temp
-temp4.text('Temperature: ' + tempData4 + 'F')
+temp4.text('Temp: ' + tempData4 + 'F')
 
 let wind4 = $('#wind4')
 windData4 = data.list[24].wind.speed
@@ -151,7 +151,7 @@ icon5Img.attr('src', 'https://openweathermap.org/img/wn/'+icon5+'.png')
 
 let temp5 = $('#temp5')
 tempData5 = data.list[32].main.temp
-temp5.text('Temperature: ' + tempData5 + 'F')
+temp5.text('Temp: ' + tempData5 + 'F')
 
 let wind5 = $('#wind5')
 windData5 = data.list[32].wind.speed

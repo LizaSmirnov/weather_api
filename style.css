@@ -1,3 +1,9 @@
 .col-lg-8 {
     display:none;
 }
+
+@media screen and (min-width: 80rem) {
+    .container {
+      margin: 1em 2em;
+    }
+  }
